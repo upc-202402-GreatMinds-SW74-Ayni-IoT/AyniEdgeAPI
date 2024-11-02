@@ -1,5 +1,6 @@
 package com.greatminds.ayni.ayniedgeapi.iot.interfaces.rest;
 
+import com.greatminds.ayni.ayniedgeapi.iot.domain.model.aggregates.Status;
 import com.greatminds.ayni.ayniedgeapi.iot.domain.model.queries.GetStatusByIdQuery;
 import com.greatminds.ayni.ayniedgeapi.iot.domain.services.StatusCommandService;
 import com.greatminds.ayni.ayniedgeapi.iot.domain.services.StatusQueryService;
@@ -12,6 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -20,10 +25,12 @@ import org.springframework.web.bind.annotation.*;
 public class StatusController {
     private final StatusQueryService statusQueryService;
     private final StatusCommandService statusCommandService;
+    private final RestTemplate restTemplate;
 
-    public StatusController(StatusQueryService statusQueryService, StatusCommandService statusCommandService) {
+    public StatusController(StatusQueryService statusQueryService, StatusCommandService statusCommandService, RestTemplate restTemplate) {
         this.statusQueryService = statusQueryService;
         this.statusCommandService = statusCommandService;
+        this.restTemplate = restTemplate;
     }
 
     @PostMapping
@@ -43,6 +50,9 @@ public class StatusController {
         }
 
         var statusResource = StatusResourceFromEntityAssembler.toResourceFromEntity(status.get());
+
+        sendDataToBackend(status.get());
+
         return new ResponseEntity<>(statusResource, HttpStatus.CREATED);
     }
 
@@ -56,6 +66,26 @@ public class StatusController {
         }
 
         var statusResource = StatusResourceFromEntityAssembler.toResourceFromEntity(status.get());
+
         return new ResponseEntity<>(statusResource, HttpStatus.OK);
+    }
+
+    @PutMapping("/data")
+    public ResponseEntity<String> receiveData(@RequestBody Status edgeData) {
+        sendDataToBackend(edgeData);
+        return ResponseEntity.ok("Data received and sent to backend");
+    }
+
+    private void sendDataToBackend(Status status) {
+        Map<String, Object> dataToSend = new HashMap<>();
+        dataToSend.put("temperature", status.getTemperature());
+        dataToSend.put("hydration", status.getHumidity());
+        dataToSend.put("oxygenation", status.getOxygen());
+        dataToSend.put("waterLevel", status.getWaterLevel());
+
+        Long cropId = status.getCropId();
+        String backendUrl = "https://ayni-v1.sfo1.zeabur.app/api/v1/sensors/" + cropId;
+
+        restTemplate.put(backendUrl, dataToSend);
     }
 }
