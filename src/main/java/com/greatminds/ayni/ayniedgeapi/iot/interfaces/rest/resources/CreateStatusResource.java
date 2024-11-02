@@ -1,4 +1,4 @@
 package com.greatminds.ayni.ayniedgeapi.iot.interfaces.rest.resources;
 
-public record CreateStatusResource(Long CropId, double temperature, double humidity, double oxygen, double water) {
+public record CreateStatusResource(Long cropId, Float temperature, Float humidity, Float oxygen, Float waterLevel) {
 }

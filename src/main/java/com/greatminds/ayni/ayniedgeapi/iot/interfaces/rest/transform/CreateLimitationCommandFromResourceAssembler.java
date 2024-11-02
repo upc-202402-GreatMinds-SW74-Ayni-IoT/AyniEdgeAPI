@@ -5,6 +5,6 @@ import com.greatminds.ayni.ayniedgeapi.iot.interfaces.rest.resources.CreateLimit
 
 public class CreateLimitationCommandFromResourceAssembler {
     public static CreateLimitationCommand toCommandFromResource(CreateLimitationResource resource) {
-        return new CreateLimitationCommand(resource.cropId(), resource.recommendedTemperature(), resource.recommendedHumidity(), resource.recommendedOxygen(), resource.recommendedWater());
+        return new CreateLimitationCommand(resource.cropId(), resource.recommendedTemperature(), resource.recommendedHumidity(), resource.recommendedOxygen(), resource.recommendedWaterlevel());
     }
 }

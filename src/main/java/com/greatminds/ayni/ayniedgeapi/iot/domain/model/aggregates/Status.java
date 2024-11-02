@@ -1,8 +1,6 @@
 package com.greatminds.ayni.ayniedgeapi.iot.domain.model.aggregates;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 @Entity
@@ -10,26 +8,27 @@ import lombok.Getter;
 public class Status {
     @Id
     @Getter
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Getter
     private Long cropId;
 
     @Getter
-    private double temperature;
+    private Float temperature;
 
     @Getter
-    private double humidity;
+    private Float humidity;
 
     @Getter
-    private double oxygen;
+    private Float oxygen;
 
     @Getter
-    private double waterLevel;
+    private Float waterLevel;
 
     public Status() {}
 
-    public Status(Long cropId, double temperature, double humidity, double oxygen, double waterLevel) {
+    public Status(Long cropId, Float temperature, Float humidity, Float oxygen, Float waterLevel) {
         this.cropId = cropId;
         this.temperature = temperature;
         this.humidity = humidity;

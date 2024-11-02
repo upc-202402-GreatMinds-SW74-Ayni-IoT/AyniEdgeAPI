@@ -5,6 +5,9 @@ import com.greatminds.ayni.ayniedgeapi.iot.interfaces.rest.resources.CreateStatu
 
 public class CreateStatusCommandFromResourceAssembler {
     public static CreateStatusCommand toCommandFromResource(CreateStatusResource resource) {
-        return new CreateStatusCommand(resource.CropId(), resource.temperature(), resource.humidity(), resource.oxygen(), resource.water());
+        return new CreateStatusCommand(
+                resource.cropId(),
+                resource.temperature(),
+                resource.humidity(), resource.oxygen(), resource.waterLevel());
     }
 }

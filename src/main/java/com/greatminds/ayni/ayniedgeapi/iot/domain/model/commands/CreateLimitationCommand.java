@@ -1,4 +1,4 @@
 package com.greatminds.ayni.ayniedgeapi.iot.domain.model.commands;
 
-public record CreateLimitationCommand(Long cropId, double recommendedTemperature, double recommendedHumidity, double recommendedOxygen, double recommendedWaterLevel) {
+public record CreateLimitationCommand(Long cropId, Float recommendedTemperature, Float recommendedHumidity, Float recommendedOxygen, Float recommendedWaterLevel) {
 }

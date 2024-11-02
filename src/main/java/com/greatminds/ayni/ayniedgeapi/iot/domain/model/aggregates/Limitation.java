@@ -1,8 +1,6 @@
 package com.greatminds.ayni.ayniedgeapi.iot.domain.model.aggregates;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 @Entity
@@ -10,26 +8,27 @@ import lombok.Getter;
 public class Limitation {
     @Id
     @Getter
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Getter
     private Long cropId;
 
     @Getter
-    private double recommendedTemperature;
+    private Float recommendedTemperature;
 
     @Getter
-    private double recommendedHumidity;
+    private Float recommendedHumidity;
 
     @Getter
-    private double recommendedOxygen;
+    private Float recommendedOxygen;
 
     @Getter
-    private double recommendedWaterLevel;
+    private Float recommendedWaterLevel;
 
     public Limitation() {}
 
-    public Limitation(Long cropId, double recommendedTemperature, double recommendedHumidity, double recommendedOxygen, double recommendedWaterLevel) {
+    public Limitation(Long cropId, Float recommendedTemperature, Float recommendedHumidity, Float recommendedOxygen, Float recommendedWaterLevel) {
         this.cropId = cropId;
         this.recommendedTemperature = recommendedTemperature;
         this.recommendedHumidity = recommendedHumidity;
