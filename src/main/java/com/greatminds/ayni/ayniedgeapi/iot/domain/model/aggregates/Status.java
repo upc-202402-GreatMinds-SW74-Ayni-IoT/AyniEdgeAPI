@@ -35,4 +35,22 @@ public class Status {
         this.oxygen = oxygen;
         this.waterLevel = waterLevel;
     }
+
+    public void update(Status request) {
+        if (request.temperature != null) {
+            this.temperature = request.temperature;
+        }
+        if (request.humidity != null) {
+            this.humidity = request.humidity;
+        }
+        if (request.oxygen != null) {
+            this.oxygen = request.oxygen;
+        }
+        if (request.waterLevel != null) {
+            this.waterLevel = request.waterLevel;
+        }
+        if (request.cropId != null) {
+            this.cropId = request.cropId;
+        }
+    }
 }

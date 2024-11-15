@@ -6,6 +6,7 @@ import com.greatminds.ayni.ayniedgeapi.iot.domain.services.StatusCommandService;
 import com.greatminds.ayni.ayniedgeapi.iot.domain.services.StatusQueryService;
 import com.greatminds.ayni.ayniedgeapi.iot.interfaces.rest.resources.CreateStatusResource;
 import com.greatminds.ayni.ayniedgeapi.iot.interfaces.rest.resources.StatusResource;
+import com.greatminds.ayni.ayniedgeapi.iot.interfaces.rest.resources.UpdateStatusResource;
 import com.greatminds.ayni.ayniedgeapi.iot.interfaces.rest.transform.CreateStatusCommandFromResourceAssembler;
 import com.greatminds.ayni.ayniedgeapi.iot.interfaces.rest.transform.StatusResourceFromEntityAssembler;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -71,9 +72,16 @@ public class StatusController {
     }
 
     @PutMapping("/data")
-    public ResponseEntity<String> receiveData(@RequestBody Status edgeData) {
-        sendDataToBackend(edgeData);
-        return ResponseEntity.ok("Data received and sent to backend");
+    public ResponseEntity<String> receiveData(@PathVariable Long statusId ,@RequestBody UpdateStatusResource edgeData) {
+        try{
+            Long updatedStatusId = statusCommandService.updateStatus(statusId, edgeData);
+            Status updatedStatus = statusQueryService.handle(new GetStatusByIdQuery(updatedStatusId))
+                    .orElseThrow(() -> new IllegalArgumentException("Status not found"));
+            sendDataToBackend(updatedStatus);
+            return ResponseEntity.ok("Data received and sent to backend");
+        } catch (IllegalArgumentException e){
+            return ResponseEntity.notFound().build();
+        }
     }
 
     private void sendDataToBackend(Status status) {
