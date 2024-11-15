@@ -71,14 +71,14 @@ public class StatusController {
         return new ResponseEntity<>(statusResource, HttpStatus.OK);
     }
 
-    @PutMapping("/data")
-    public ResponseEntity<String> receiveData(@PathVariable Long statusId ,@RequestBody UpdateStatusResource edgeData) {
+    @PutMapping("/{statusId}")
+    public ResponseEntity<StatusResource> receiveData(@PathVariable Long statusId ,@RequestBody UpdateStatusResource edgeData) {
         try{
             Long updatedStatusId = statusCommandService.updateStatus(statusId, edgeData);
             Status updatedStatus = statusQueryService.handle(new GetStatusByIdQuery(updatedStatusId))
                     .orElseThrow(() -> new IllegalArgumentException("Status not found"));
             sendDataToBackend(updatedStatus);
-            return ResponseEntity.ok("Data received and sent to backend");
+            return ResponseEntity.ok().body(StatusResourceFromEntityAssembler.toResourceFromEntity(updatedStatus));
         } catch (IllegalArgumentException e){
             return ResponseEntity.notFound().build();
         }
