@@ -35,4 +35,22 @@ public class Limitation {
         this.recommendedOxygen = recommendedOxygen;
         this.recommendedWaterLevel = recommendedWaterLevel;
     }
+
+    public void update(Limitation request) {
+        if (request.cropId != null) {
+            this.cropId = request.cropId;
+        }
+        if (request.recommendedTemperature != null) {
+            this.recommendedTemperature = request.recommendedTemperature;
+        }
+        if (request.recommendedHumidity != null) {
+            this.recommendedHumidity = request.recommendedHumidity;
+        }
+        if (request.recommendedOxygen != null) {
+            this.recommendedOxygen = request.recommendedOxygen;
+        }
+        if (request.recommendedWaterLevel != null) {
+            this.recommendedWaterLevel = request.recommendedWaterLevel;
+        }
+    }
 }
